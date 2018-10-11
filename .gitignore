@@ -1,0 +1,7 @@
+*.pyc
+tmp/
+.idea/
+.vscode/
+migrations/
+logs/
+venv/

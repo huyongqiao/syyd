@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{{ category_hanzi }} - 随意阅读</title>
+    <meta name="keywords" content="{{ category_hanzi }},随意阅读" />
+    <meta name="description" content="随意阅读专注于{{ category_hanzi }}小说搜索." />
+{% endblock %}
+
+{% block section %}
+    <section class="w-all">
+    <nav class="mt20">
+        <ul class="clearfix">
+            <li><a href="{% url 'home' %}" title="随意阅读首页"><i class="pticon pticon-home pticon-lg"></i> 随意阅读首页</a><i class="pticon pticon-angle-right icon"></i></li>
+            <li><a href="{% url 'sort' %}" title="小说分类">小说分类</a><i class="pticon pticon-angle-right icon"></i></li>
+            <li><a href="{% url 'sort_catogery' category %}" title="{{ category_hanzi }}小说">{{ category_hanzi }}小说</a></li>
+        </ul>
+    </nav>
+    <div class="container clearfix mt20">
+        <div class="card mb20">
+            <div class="body novelselectlist">
+                <p>
+                                        <a href="/sort/all.html" title="全部">全部</a>&nbsp;&nbsp;
+                                        <a href="/sort/xuanhuan.html" title="玄幻">玄幻</a>&nbsp;&nbsp;
+                                        <a href="/sort/qihuan.html" title="奇幻">奇幻</a>&nbsp;&nbsp;
+                                        <a href="/sort/wuxia.html" title="武侠">武侠</a>&nbsp;&nbsp;
+                                        <a href="/sort/xianxia.html" title="仙侠">仙侠</a>&nbsp;&nbsp;
+                                        <a href="/sort/dushi.html" title="都市">都市</a>&nbsp;&nbsp;
+                                        <a href="/sort/lishi.html" title="历史">历史</a>&nbsp;&nbsp;
+                                        <a href="/sort/junshi.html" title="军事">军事</a>&nbsp;&nbsp;
+                                        <a href="/sort/youxi.html" title="游戏">游戏</a>&nbsp;&nbsp;
+                                        <a href="/sort/jingji.html" title="竞技">竞技</a>&nbsp;&nbsp;
+                                        <a href="/sort/kehuan.html" title="科幻">科幻</a>&nbsp;&nbsp;
+                                        <a href="/sort/lingyi.html" title="灵异">灵异</a>&nbsp;&nbsp;
+                                        <a href="/sort/qita.html" title="其他">其他</a>&nbsp;&nbsp;
+                                    </p>
+            </div>
+        </div>
+        <div class="w-left">
+            <div class="card">
+                <div class="header line">
+                    <h2>{{ category_hanzi }}小说列表</h2>
+                </div>
+                <div class="body">
+                    <ul class="librarylist">
+
+                        {% for novel in novels %}
+<li>
+                            <div class="pt-ll-l">
+                                <a href="{% url 'novel_root' novel.id %}" title="{{ novel.name }}"><img src="{{ novel.cover }}" alt="{{ novel.name }}" /></a>
+                            </div>
+                            <div class="pt-ll-r">
+                                <p class="info">
+                                    <span>《<a href="{% url 'novel_root' novel.id %}" class="novelname" title="{{ novel.name }}">{{ novel.name }}</a>》</span>
+                                    <span>作者：<a href="{% url 'author_novels' novel.author.id %}" title="{{ novel.author.name }} 作品列表">{{ novel.author.name }}</a></span>
+                                </p>
+                                <p class="intro">{{ novel.intro }}</p>
+                                <p class="last">
+                                    最新章节：<a href="{% url 'novel_chapter' novel.id novel.chapter_set.count%}" title="{{ novel.name }} {{ novel.chapter_set.last.title }}" target="_blank">{{ novel.chapter_set.last.title }}</a>{{ novel.chapter_set.last.update_time }}
+                                </p>
+                            </div>
+                            <div class="clear"></div>
+                        </li>
+                        {% endfor %}
+                                                
+
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

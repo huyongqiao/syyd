@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>随意阅读 - 小说搜索网</title>
+    <meta name="keywords" content="随意阅读,小说搜索,小说搜索网"/>
+    <meta name="description" content="随意阅读小说搜索引擎聚合网络各大小说网站最新小说章节,无广告无弹窗全文阅读."/>
+{% endblock %}
+
+{% block section %}
+    <section class="w-all">
+        <div class="container clearfix mt10">
+            <div class="w-left">
+                <div class="card">
+                    <div class="header line">
+                        <h3>站长推荐</h3>
+                    </div>
+                    <div class="body" style="height:490px;overflow: hidden">
+                        <div class="novellist">
+                            {% for novel in novel_list %}
+                                {% if forloop.counter0|divisibleby:2 %}
+                                    <div class="item ml15">
+                                {% else %}
+                                    <div class="item">
+                                {% endif %}
+
+                            <div class="item-left">
+                                <a href="{% url 'novel_root' novel.id %}"
+                                   title="{{ novel.name }}"><img
+                                        src="{{ novel.cover }}"
+                                        alt="{{ novel.name }}">
+                                </a>
+                            </div>
+                            <div class="item-right">
+                                <dl>
+                                    <dt>
+                                        <a href="{% url 'novel_root' novel.id %}"
+                                           title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </dt>
+                                    <dd>作者：<a
+                                            href="{% url 'author_novels' novel.author.id %}"
+                                            title="{{ novel.author.name }} 作品大全">{{ novel.author.name }}</a>
+                                    </dd>
+                                    <dd class="intro">
+                                        {{ novel.intro }}
+                                    </dd>
+                                </dl>
+                            </div>
+                            </div>
+                            {% endfor %}
+                            <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="w-right">
+                <div class="card">
+                    <div class="header line">
+                        <h3>最新入库</h3>
+                    </div>
+                    <div class="body" style="height:490px;overflow: hidden">
+                        <ul class="rightlist">
+                            {% for novel in novels_new %}
+                                <li>
+                                <i {% if forloop.counter < 4 %} class="first" {% endif %}>{{ forloop.counter }}</i>
+                                <span><a href="{% url 'author_novels' novel.author.id %}"
+                                         title="{{ novel.author.name }} 作品大全">{{ novel.author.name }}</a></span>
+                                <a href="{% url 'novel_root' novel.id %}" title="惊世医妃，腹黑九皇叔">{{ novel.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
+

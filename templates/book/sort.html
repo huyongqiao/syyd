@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>小说分类 - 随意阅读</title>
+    <meta name="keywords" content="小说分类,随意阅读"/>
+    <meta name="description" content="随意阅读专注于小说搜索,提供最全的小说保持最快的更新"/>
+{% endblock %}
+
+{% block section %}
+    <section class="w-all">
+        <nav class="mt20">
+            <ul class="clearfix">
+                <li><a href="{% url 'home' %}" title="随意阅读首页"><i
+                        class="pticon pticon-home pticon-lg"></i> 随意阅读首页</a><i
+                        class="pticon pticon-angle-right icon"></i></li>
+                <li><a href="{% url 'sort' %}" title="小说分类">小说分类</a></li>
+            </ul>
+        </nav>
+        <div class="container clearfix mt20">
+            <ul class="topindex">
+
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>玄幻小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in xuanhuan_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/xuanhuan.html">查看所有玄幻小说>></a>
+                        </div>
+                    </div>
+                </li>
+
+
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>奇幻小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in qihuan_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/qihuan.html">查看所有奇幻小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li class="mr0">
+                    <div class="card">
+                        <div class="header line">
+                            <h3>武侠小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in wuxia_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/wuxia.html">查看所有武侠小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>仙侠小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in xianxia_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/xianxia.html">查看所有仙侠小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>都市小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in dushi_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/dushi.html">查看所有都市小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li class="mr0">
+                    <div class="card">
+                        <div class="header line">
+                            <h3>历史小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in lishi_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/lishi.html">查看所有历史小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>军事小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in junshi_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/junshi.html">查看所有军事小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>游戏小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in youxi_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/youxi.html">查看所有游戏小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li class="mr0">
+                    <div class="card">
+                        <div class="header line">
+                            <h3>竞技小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in jingji_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/jingji.html">查看所有竞技小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>科幻小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in kehuan_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}        </ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/kehuan.html">查看所有科幻小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="header line">
+                            <h3>灵异小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in lingyi_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}    </ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/lingyi.html">查看所有灵异小说>></a>
+                        </div>
+                    </div>
+                </li>
+                <li class="mr0">
+                    <div class="card">
+                        <div class="header line">
+                            <h3>其他小说</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="rightlist">
+                                {% for novel in qita_novels %}
+                                    <li><i {% if forloop.counter < 4 %}
+                                        class="first"{% endif %}>{{ forloop.counter }}</i><span><a
+                                            href="" title=" 作品大全"></a></span><a
+                                            href="{% url 'novel_root' novel.id %}"
+                                            title="{{ novel.name }}">{{ novel.name }}</a>
+                                    </li>
+                                {% endfor %}</ul>
+                        </div>
+                        <div class="footer tar">
+                            <a href="/sort/qita.html">查看所有其他小说>></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}

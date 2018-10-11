@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load custom_filter %}
+
+
+{% block head %}
+    <title>{{ author.name }}作品大全</title>
+    <meta name="keywords" content="{{ author.name }},随意阅读" />
+    <meta name="description" content="随意阅读专注于{{ author.name }}作品大全小说搜索" />
+{% endblock %}
+
+{% block section %}
+<section class="w-all">
+    <nav class="mt20">
+        <ul class="clearfix">
+            <li><a href="{% url 'home' %}" title="随意阅读首页"><i class="pticon pticon-home pticon-lg"></i> 随意阅读首页</a><i class="pticon pticon-angle-right icon"></i></li>
+            <li><a href="{% url 'author_novels' author.id %}" title="{{ author.name }} 作品大全">{{ author.name }} 作品大全</a></li>
+        </ul>
+    </nav>
+    <div class="container clearfix mt20">
+        <div class="w-left">
+            <div class="card">
+                <div class="header line">
+                    <h2>{{ author.name }} 作品大全</h2>
+                </div>
+                <div class="body">
+                    <ul class="librarylist">
+                        {% for novel in novels %}
+                        <li>
+                         <div class="pt-ll-l">
+                                <a href="{% url 'novel_root' novel.id %}" title="{{ novel.name }}"><img src="{{ novel.cover }}" alt="{{ novel.name }}" /></a>
+                            </div>
+                            <div class="pt-ll-r">
+                                <p class="info">
+                                    <span>《<a href="{% url 'novel_root' novel.id %}" class="novelname" title="{{ novel.name }}">{{ novel.name }}</a>》</span>
+                                    <span>作者：<a href="{% url 'author_novels' novel.author.id %}" title="{{ novel.author.name }} 作品列表">{{ novel.author.name }}</a></span>
+                                    <span>分类：<a href="{% url 'sort_catogery' novel.category|hanzi_pinyin %}" title="{{ novel.category }}小说">{{ novel.category }}</a></span>
+
+                                </p>
+                                <p class="intro">
+                                    {{ novel.intro }}
+                                <p class="last">
+                                    最新章节：<a href="{% url 'novel_chapter' novel.id novel.chapter_set.count%}" title="{{ novel.name }} {{ novel.chapter_set.last.title }}" target="_blank">{{ novel.chapter_set.last.title }}</a>{{ novel.chapter_set.last.update_time }}
+                                </p>
+                            </div>
+                            <div class="clear"></div>
+                        </li>
+                        {% endfor %}
+                    </ul>                                           
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

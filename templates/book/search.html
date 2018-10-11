@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load custom_filter %}
+
+{% block head %}
+    <title>搜索“{{ kewwords }}”的结果</title>
+    <meta name="keywords" content="{{ keywords }},快眼看书" />
+    <meta name="description" content="随意阅读专注于小说搜索" />
+{% endblock %}
+
+{% block section %}
+    <section class="w-all">
+    <div class="container clearfix mt20">
+        <div class="w-left">
+            <div class="card">
+                <div class="header line">
+                    <h2>搜索 “<strong class="num">{{ keywords }}</strong>” 结果</h2>
+                </div>
+                <div class="body">
+                    <ul class="librarylist">
+                        {% for novel in novels %}
+                        <li>
+                         <div class="pt-ll-l">
+                                <a href="{% url 'novel_root' novel.id %}" title="{{ novel.name }}"><img src="{{ novel.cover }}" alt="{{ novel.name }}" /></a>
+                            </div>
+                            <div class="pt-ll-r">
+                                <p class="info">
+                                    <span>《<a href="{% url 'novel_root' novel.id %}" class="novelname" title="{{ novel.name }}">{{ novel.name }}</a>》</span>
+                                    <span>作者：<a href="{% url 'author_novels' novel.author.id %}" title="{{ novel.author.name }} 作品列表">{{ novel.author.name }}</a></span>
+                                    <span>分类：<a href="{% url 'sort_catogery' novel.category|hanzi_pinyin %}" title="{{ novel.category }}小说">{{ novel.category }}</a></span>
+                                </p>
+                                <p class="intro">
+                                    {{ novel.intro }}
+                                <p class="last">
+                                    最新章节：<a href="{% url 'novel_chapter' novel.id novel.chapter_set.count%}" title="{{ novel.name }} {{ novel.chapter_set.last.title }}" target="_blank">{{ novel.chapter_set.last.title }}</a>{{ novel.chapter_set.last.update_time }}
+                                </p>
+                            </div>
+                            <div class="clear"></div>
+                        </li>
+                        {% endfor %}
+
+                
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

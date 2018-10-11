@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load custom_filter %}
+
+{% block head %}
+    <title> {{ chapter.title }} - {{ novel.name }}</title>
+    <meta name="keywords" content="{{ novel.name }},{{ chapter.title }}"/>
+    <meta name="description"
+          content="本站提供《{{ novel.name }}》最新章节的搜索，更新超级快，无病毒无木马，页面干净清爽，希望大家收藏!"/>
+{% endblock %}
+
+{% block section %}
+
+<section class="w-all">
+	<nav class="mt20">
+		<ul class="clearfix">
+			<li><a href="{% url 'home' %}"><i class="pticon pticon-home pticon-lg"></i> 随意阅读首页</a><i class="pticon pticon-angle-right icon"></i></li>
+			<li><a href="{% url 'sort_catogery' novel.category|hanzi_pinyin %}">{{ novel.category }}</a><i class="pticon pticon-angle-right icon"></i></li>
+			<li><a href="{% url 'novel_root' novel.id %}">{{ novel.name }}</a><i class="pticon pticon-angle-right icon"></i></li>
+			<li><a href="{% url 'novel_dir' novel.id %}">{{ novel.name }} 最佳来源</a></li>
+		</ul>
+	</nav>
+	<div class="container clearfix mt20">
+		<div class="w-left">
+			<div class="card">
+				<div class="header line">
+					<h1>{{ novel.name }}</h1>
+				</div>
+				<div class="body novel">
+					<div class="novelinfo">
+						<div class="novelinfo-l">
+							<ul>
+								<li>作者：<a href="{% url 'author_novels' novel.author.id %}" title="{{ novel.author.name }} 作品大全">{{ novel.author.name }}</a></li>
+								<li>分类：<a href="{% url 'sort_catogery' novel.category|hanzi_pinyin %}" title="{{ novel.category }}小说">{{ novel.category }}</a></li>
+								<li>点击：{{ novel.click_num }}</li>
+								<li>推荐：{{ novel.vote_num }}</li>
+								<li>收藏：{{ novel.mark_num }}</li>
+                                <li>最新：<a href="{% url 'novel_chapter' novel.id chapters_num %}" title="{{ novel.name }} {{ latest_chapter.title }}" target="_blank">{{ latest_chapter.title }}</a></li>
+								<li>更新：{{ novel.update_time }}</li>
+							</ul>
+						</div>
+                        <div class="novelinfo-r">
+							<img src="{{ novel.cover }}" alt="{{ novel.name }}">
+                        </div>
+					</div>
+                    <div class="operate">
+                        <a href="javascript:$.pt.gopos('.commentarea');" class="btn btn-default" target="_blank"><i class="pticon pticon-download"></i> 直达底部</a>
+					</div>
+					<div class="clear"></div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div class="card mt20">
+    <div class="header line">
+        <h2>{{ novel.name }} 章节目录</h2>
+    </div>
+    <div class="body ">
+        <ul class="dirlist clearfix">
+            {% for chapter in chapters %}
+                <li>
+                    <a href="{% url 'novel_chapter' novel.id forloop.counter %}"
+                       title="{{ novel.name }} {{ chapter.title }}"
+                       target="_blank">{{ chapter.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+    <div class="card mt20 commentarea"></div>
+</section>
+
+{% endblock %}

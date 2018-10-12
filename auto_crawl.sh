@@ -1,7 +1,9 @@
 #!/bin/bash
+
+source venv/bin/activate
 echo "start auto scrawl novel from kyks"
 
-for ((i=9000; i<9015; i++))
+for ((i=2000; i<4000; i++))
 do
     export NOVEL_PAGE=$i
     python manage.py get_novel_from_kyks

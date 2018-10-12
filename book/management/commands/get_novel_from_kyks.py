@@ -23,7 +23,7 @@ class Command(BaseCommand):
     # 斗破苍穹 4721
     # 斗罗大陆 4843
 
-    NOVEL_PAGE = os.environ.get('NOVEL_PAGE', 10000)
+    NOVEL_PAGE = os.environ.get('NOVEL_PAGE', 5050)
     novel_url = 'https://www.kuaiyankanshu.net/' + str(NOVEL_PAGE)
     dir_url = novel_url + '/dir.html'
     novel_name = ''
@@ -35,27 +35,45 @@ class Command(BaseCommand):
     content_list = []
 
     def get_dir(self):
-        response = requests.get(self.dir_url, timeout=10)
-        xml = lxml.etree.HTML(response.text)
-        href_path = '//ul[contains(@class,"dirlist")]/li/a/@href'
-        href_list = xml.xpath(href_path)
-        title_path = '//ul[contains(@class,"dirlist")]/li/a/text()'
-        self.title_list = xml.xpath(title_path)
-        novel_name_path = '//h1/text()'
-        self.novel_name = xml.xpath(novel_name_path)[0][:-5]
-        author_name_path = '//div[@class="novelinfo-l"]/ul/li[1]/a/text()'
-        self.author_name = xml.xpath(author_name_path)[0]
-        novel_category_path = '//div[@class="novelinfo-l"]/ul/li[2]/a/text()'
-        self.novel_category = xml.xpath(novel_category_path)[0]
+        for i in range(3):
+            try:
+                response = requests.get(self.dir_url, timeout=10)
+                xml = lxml.etree.HTML(response.text)
+                href_path = '//ul[contains(@class,"dirlist")]/li/a/@href'
+                href_list = xml.xpath(href_path)
+                title_path = '//ul[contains(@class,"dirlist")]/li/a/text()'
+                self.title_list = xml.xpath(title_path)
+                novel_name_path = '//h1/text()'
+                self.novel_name = xml.xpath(novel_name_path)[0][:-5]
+                author_name_path = '//div[@class="novelinfo-l"]/ul/li[1]/a/text()'
+                self.author_name = xml.xpath(author_name_path)[0]
 
-        response = requests.get(self.novel_url, timeout=10)
-        xml = lxml.etree.HTML(response.text)
-        cover_path = '//div[@class="novelinfo-r"]/a/img/@src'
-        self.novel_cover = xml.xpath(cover_path)[0]
-        intro_path = '//div[@class="body novelintro"]/text()'
-        self.novel_intro = xml.xpath(intro_path)[0]
+                novel_count = Novel.objects.filter(
+                    author__name=self.author_name,
+                    name=self.novel_name).count()
+                if novel_count > 0:
+                    crawl_info_logger.info('小说：%s（%s）%s 已存在，跳过爬取' % (
+                    self.novel_name, self.author_name, self.dir_url))
+                    sys.exit(1)
 
-        return href_list
+                novel_category_path = '//div[@class="novelinfo-l"]/ul/li[2]/a/text()'
+                self.novel_category = xml.xpath(novel_category_path)[0]
+
+                response = requests.get(self.novel_url, timeout=10)
+                xml = lxml.etree.HTML(response.text)
+                cover_path = '//div[@class="novelinfo-r"]/a/img/@src'
+                self.novel_cover = xml.xpath(cover_path)[0]
+                intro_path = '//div[@class="body novelintro"]/text()'
+                self.novel_intro = xml.xpath(intro_path)[0]
+                return href_list
+            except Exception as e:
+                crawl_warning_logger.warning(
+                    '爬取小说目录超时：%s 第%s次' % (self.dir_url, i + 1))
+                crawl_warning_logger.warning(e)
+                time.sleep(1)
+
+        crawl_error_logger.error('爬取小说目录失败：%s，程序退出！' % (self.dir_url))
+        sys.exit(1)
 
     def get_content(self, index, content_url):
         for i in range(3):
@@ -67,30 +85,25 @@ class Command(BaseCommand):
                 self.content_list.append([index, content])
                 return
             except Exception as e:
-                crawl_warning_logger.warning('%s 爬取超时第%s次' % (content_url, i+1))
+                crawl_warning_logger.warning('爬取小说章节超时：%s %s 第%s次' % (
+                self.novel_name, content_url, i + 1))
                 crawl_warning_logger.warning(e)
                 time.sleep(1)
 
         # 如果有1个章节，3次都没有抓取成功，程序强制退出，爬取结果不保存
-        crawl_error_logger.error('爬取小说：%s %s 失败，程序退出！' % (content_url, self.novel_name))
+        crawl_error_logger.error(
+            '爬取小说章节失败：%s %s，程序退出！' % (self.novel_name, content_url))
+        # 单线程中退出主程序用sys.exit，子线程中退出主程序用os._exit
         os._exit(1)
 
     def write_to_db(self):
         # content_list原本是无序的，多线程爬取完以后按照目录顺序进行排序
         self.content_list.sort(key=lambda e: e[0])
+        chapter_num = len(self.content_list)
 
         # 没有章节对应的作者和小说时，对应创建
         author, _ = Author.objects.get_or_create(name=self.author_name)
 
-        novels = Novel.objects.filter(name=self.novel_name, author=author)
-        novel_count = novels.count()
-
-        # 如果数据库里已经有这个小说了，则不执行保存操作，避免重复爬取保存
-        if novel_count > 0:
-            crawl_info_logger.info('小说：%s 已存在，不重复保存保存' % novels[0].name)
-            return
-
-        chapter_num = len(self.title_list)
         novel = Novel.objects.create(
             name=self.novel_name,
             author=author,
@@ -131,4 +144,5 @@ class Command(BaseCommand):
         self.write_to_db()
 
         t2 = time.time()
-        crawl_info_logger.info('爬取小说：%s %s结束，程序耗时%s秒' % (self.novel_name, self.dir_url, int(t2 - t1)))
+        crawl_info_logger.info('爬取小说：%s %s结束，程序耗时%s秒' % (
+        self.novel_name, self.dir_url, int(t2 - t1)))

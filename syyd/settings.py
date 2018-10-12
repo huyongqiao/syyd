@@ -25,7 +25,7 @@ SECRET_KEY = 'r=9)v+&)2!!0lr$6*ozfd-^q+(88@god3%mxj##v_9nxpvtxav'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -157,8 +157,7 @@ LOGGING = {
         'crawl_info_handler': {
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': '%s/logs/crawl_info.log' % BASE_DIR,
-            'when': 'D',  # 每天一切割日志
-            'interval': 1,
+            'when': 'midnight',
             'backupCount': 10,
             'formatter': 'standard',
             'level': 'INFO',
@@ -166,8 +165,7 @@ LOGGING = {
         'crawl_warning_handler': {
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': '%s/logs/crawl_warn.log' % BASE_DIR,
-            'when': 'D',  # 每天一切割日志
-            'interval': 1,
+            'when': 'midnight',
             'backupCount': 10,
             'formatter': 'standard',
             'level': 'WARNING',
@@ -175,8 +173,7 @@ LOGGING = {
         'crawl_error_handler': {
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': '%s/logs/crawl_error.log' % BASE_DIR,
-            'when': 'D',  # 每天切割日志
-            'interval': 1,
+            'when': 'midnight',
             'backupCount': 10,
             'formatter': 'standard',
             'level': 'ERROR',

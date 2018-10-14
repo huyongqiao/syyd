@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'book.middleware.RecordIP',
 ]
 
 ROOT_URLCONF = 'syyd.urls'
@@ -177,6 +178,14 @@ LOGGING = {
             'backupCount': 10,
             'formatter': 'standard',
             'level': 'ERROR',
+        },
+        'record_ip_handler': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': '%s/logs/record_ip.log' % BASE_DIR,
+            'when': 'midnight',
+            'backupCount': 10,
+            'formatter': 'standard',
+            'level': 'INFO',
         }
     },
     'loggers': {
@@ -194,7 +203,12 @@ LOGGING = {
             'handlers': ['crawl_error_handler', 'console'] if DEBUG else ['crawl_error_handler'],
             'level': 'ERROR',
             'propagate': False,
-        }
+        },
+        'record_ip': {
+            'handlers': ['record_ip_handler'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     }
 }
 

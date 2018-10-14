@@ -23,7 +23,7 @@ class Command(BaseCommand):
     # 斗破苍穹 4721
     # 斗罗大陆 4843
 
-    NOVEL_PAGE = os.environ.get('NOVEL_PAGE', 5050)
+    NOVEL_PAGE = os.environ.get('NOVEL_PAGE', 1)
     novel_url = 'https://www.kuaiyankanshu.net/' + str(NOVEL_PAGE)
     dir_url = novel_url + '/dir.html'
     novel_name = ''

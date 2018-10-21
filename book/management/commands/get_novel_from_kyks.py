@@ -23,7 +23,7 @@ class Command(BaseCommand):
     # 斗破苍穹 4721
     # 斗罗大陆 4843
 
-    NOVEL_PAGE = os.environ.get('NOVEL_PAGE', 1)
+    NOVEL_PAGE = os.environ.get('NOVEL_PAGE', 1692)
     novel_url = 'https://www.kuaiyankanshu.net/' + str(NOVEL_PAGE)
     dir_url = novel_url + '/dir.html'
     novel_name = ''
@@ -146,3 +146,4 @@ class Command(BaseCommand):
         t2 = time.time()
         crawl_info_logger.info('爬取小说：%s %s结束，程序耗时%s秒' % (
         self.novel_name, self.dir_url, int(t2 - t1)))
+        return 0

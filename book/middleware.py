@@ -11,15 +11,12 @@ record_ip_logger = logging.getLogger('record_ip')
 class RecordIP(MiddlewareMixin):
     def process_request(self, request):
         try:
-            real_ip = request.META['HTTP_X_FORWARDED_FOR']
-        except KeyError:
-            pass
-        else:
+            ips = request.META['HTTP_X_FORWARDED_FOR']
             # HTTP_X_FORWARDED_FOR can be a comma-separated list of IPs.
             # Take just the first one.
-            real_ip = real_ip.split(",")[0]
-            request.META['REMOTE_ADDR'] = real_ip
+            real_ip = ips.split(",")[0]
+        except KeyError:
+            real_ip = request.META['REMOTE_ADDR']
 
-        ip = request.META['REMOTE_ADDR']
         path = request.path
-        record_ip_logger.info('%s %s' % (ip, path))
+        record_ip_logger.info('%s %s' % (real_ip, path))
